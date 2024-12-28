@@ -1,0 +1,25 @@
+{
+  "name": "xarxatec",
+  "scripts": {
+    "dev": "tsx backend/server.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@langchain/core": "^0.3.7",
+    "@langchain/groq": "^0.1.2",
+    "dotenv": "^16.4.5",
+    "hono": "^4.6.15",
+    "open": "^10.1.0",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "ts-node": "^10.9.2"
+  },
+  "version": "1.0.0",
+  "description": "Para instalar dependencias: ```sh npm install ```",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

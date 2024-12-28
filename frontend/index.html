@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/frontend/styles.css">
+    <title>Chat Pirata</title>
+</head>
+<body>
+    <div id="chat-container">
+        <h1 class="app-title">Hablando como Corsarios 🗣️</h1>
+        <div id="messages"></div>
+        <div id="input-container">
+            <input type="text" id="message-input" placeholder="Escribe tu mensaje, marinero...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        const messages = [];
+
+        async function sendMessage() {
+            const input = document.getElementById('message-input');
+            const messageText = input.value.trim();
+            if (!messageText) return;
+
+            // Agregar mensaje del usuario
+            messages.push({ content: messageText, isUser: true });
+            displayMessages();
+            input.value = '';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ messages }),
+                });
+
+                const data = await response.json();
+                
+                // Agregar respuesta del asistente
+                messages.push({ content: data.response, isUser: false });
+                displayMessages();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayMessages() {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = messages
+                .map(msg => `<p style="color: ${msg.isUser ? 'blue' : 'green'}">
+                    <strong>${msg.isUser ? '🏴‍☠️ Tú' : '⚓ Pirata IA'}</strong>: ${msg.content}
+                </p>`)
+                .join('');
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Permitir enviar con Enter
+        document.getElementById('message-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
